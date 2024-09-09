@@ -12,9 +12,10 @@ EXPOSE 8000
 ARG DEV=false
 RUN python -m venv /py && \
     /py/bin/pip install  --trusted-host pypi.org --trusted-host files.pythonhosted.org --upgrade pip && \
-    apk add --update --no-cache postgresql-client && \
-    apk add --update --no-cache --virtual .tmp-build-deps \
-        build-base postgresql-dev musl-dev && \
+     apk add --force --no-cache postgresql-client && \
+     apk add --force --update --no-cache --virtual .tmp-build-deps \
+        build-base musl-dev postgresql-dev && \
+    # apk add --update --no-cache postgresql-client postgresql-dev build-base musl-dev && \
     /py/bin/pip install  --trusted-host pypi.org --trusted-host files.pythonhosted.org -r /tmp/requirements.txt && \
     if [ $DEV = "true" ]; \
         then /py/bin/pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r /tmp/requirements.dev.txt ; \
